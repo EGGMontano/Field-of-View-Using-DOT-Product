@@ -60,6 +60,7 @@ public class FOVDetection : MonoBehaviour
                 }
             }
         }
+        return false;
     }
 
     private void Update()
