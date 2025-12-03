@@ -8,6 +8,8 @@ public class FOVDetection : MonoBehaviour
 
     private bool isInFOV = false;
 
+    public float rotateSpeed = 5f;
+
     private void OnDrawGizmos()
     {
         Gizmos.color = Color.yellow;
@@ -63,8 +65,21 @@ public class FOVDetection : MonoBehaviour
         return false;
     }
 
+    private void RotateTowardsPlayer()
+    {
+        Vector3 direction = (player.position - transform.position).normalized;
+        direction.y = 0f;
+
+        Quaternion targetRotation = Quaternion.LookRotation(direction);
+        transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, rotateSpeed * Time.deltaTime);
+    }
+
     private void Update()
     {
         isInFOV = inFOV(transform, player, maxAngle, maxRange);
+        if (isInFOV)
+        {
+            RotateTowardsPlayer();
+        }
     }
 }
